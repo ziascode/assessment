@@ -5,24 +5,33 @@ import React, {useState, useEffect} from "react";
 import asset1 from './assets/asset1.svg';
 import asset2 from './assets/asset2.svg';
 import asset3 from './assets/asset3.svg';
+import {motion, AnimatePresence} from 'framer-motion';
 
 
 
 function App() {
 
+  // States & Data Storage
+  const [cases, setCases] = useState([]);  //Stores data from case studies endpoint
+  const [categories, setCategories] = useState([]); //Stores data from category endpoint  
+  const [filteredCases, setFilteredCases] = useState([]); //
+  const [activeTab, setActiveTab] = useState([]);
+
+
+
   useEffect(() => {
     getDataFromApi();
   }, []);
 
-  const [cases, setCases] = useState([]);  //Stores data from case studies endpoint
-  const [categories, setCategories] = useState([]); //Stores data from category endpoint  
 
+ 
 
   const getDataFromApi = () => {
     // Case Studies data
     axios.get('https://plankdesign.com/wp-json/plank/v1/fed-test/case-studies')
       .then(res => {
         setCases(res.data["case-studies"]);
+        setFilteredCases(res.data["case-studies"]);
         console.log(res);
       }).catch(err => {
         console.log(`Error: ${err}`);
@@ -39,6 +48,11 @@ function App() {
   
   console.log(cases);
   console.log(categories);
+  console.log(filteredCases);
+
+  
+
+
 
   return (
     <div>
@@ -49,28 +63,40 @@ function App() {
         <h1 className='text-5xl font-roboto font-bold tracking-widest mt-20 mb-10 '>WORK</h1>
 
         {/* Navigation Component*/}
-        <div className="flex flex-col space-x-0 md:flex-row md:space-x-11 pb-4 mb-10 border-b-2 border-gray-100">
+        <div className="flex flex-wrap sm:flex-nowrap space-x-0 md:flex-row md:space-x-5 pb-4 mb-10 border-b-2 border-gray-100">
+          <button className="tabs px-5 py-1 flex items-center transition transform duration-200 ease-out" onClick={() => setFilteredCases(cases)}>All</button>
           {categories.map((item) => {
             return <Nav
                       key={item.slug}
-                      tabTitle={item.title}/>
+                      id={item.slug}
+                      tabTitle={item.title}
+                      setCategories ={setCategories}
+                      setFilteredCases={setFilteredCases}
+                      activeTab={activeTab}
+                      setActiveTab={setActiveTab}
+                      cases={cases}/>
             })}
         </div>
           
           
           
         {/* Main body Component*/}
-        <div className="grid grid-cols-1 md:grid-cols-2">
-          {cases.map((item) => {
-            return <Card
-                      key={item.id}
-                      title={item.title}
-                      thumbnail={item.thumbnail? item.thumbnail :"https://res.cloudinary.com/dvhcociyf/image/upload/v1644711452/metas/plank1_s1ofon.jpg"}
-                      link={item.link}
-                      desc={item.excerpt? item.excerpt: "A Wellness Brand's Seamless Shopify Solution"}
-                      category={item.categories[0].title}/>
-            })}
+        <div className="min-h-[100vh]" id="main">
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 ">
+            <AnimatePresence>
+            {filteredCases.map((item) => {
+              return <Card
+                        key={item.id}
+                        title={item.title}
+                        thumbnail={item.thumbnail? item.thumbnail :"https://res.cloudinary.com/dvhcociyf/image/upload/v1644711452/metas/plank1_s1ofon.jpg"}
+                        link={item.link}
+                        desc={item.excerpt? item.excerpt: "A Wellness Brand's Seamless Shopify Solution"}
+                        category={item.categories[0].title}/>
+              })} 
+              </AnimatePresence>
+          </motion.div>
        </div>
+        
         
       </div>
 

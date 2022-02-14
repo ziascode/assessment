@@ -1,9 +1,17 @@
 import React from 'react';
 import arrowIcon from '../assets/arrow-icon.svg';
+import {motion} from 'framer-motion'
 
 function Card({title, thumbnail, link, category, desc}) {
   return (
-    <div className='flex space-x-7 w-full sm:w-11/12 h-[16.25rem] my-6 pr-2 font-roboto my-8'>
+    <motion.div 
+      layout
+      animate={{opacity: 1}}
+      initial={{opacity: 0}}
+      exit={{opacity: 0}}
+      transition={{duration: 0.3}}
+      className='flex space-x-7 w-full sm:w-11/12 h-[16.6rem] my-6 pr-2 font-roboto my-8 borders rounded-md ease-in-out '>
+
         <div className='relative h-64 w-48'> 
             <img className='object-cover h-full w-auto' src={thumbnail} alt="" />
         </div>
@@ -14,10 +22,11 @@ function Card({title, thumbnail, link, category, desc}) {
                 <p className='text-sm'>{desc}</p>
             </div>
             
-            <a className='absolute top-52 right-0 border-2 px-2 py-1 flex items-center space-x-2' href={link}><button className='text-[10px]  font-semibold'>
-                <p>VIEW CASE STUDY</p></button> <img className='h-2' src={arrowIcon} alt="" /> </a>
+            <a className='absolute top-52 right-0 border-2 border-white px-2 py-1 flex items-center space-x-2 duration-200 ease-out' href={link} target="_blank"><button className='text-[10px] font-semibold'>
+                <p>VIEW CASE STUDY</p></button><img className='h-2' src={arrowIcon} alt="" /></a>
         </div>
-    </div>
+
+    </motion.div>
   )
 }
 
