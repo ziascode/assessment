@@ -22,7 +22,7 @@ function Card({title, thumbnail, link, category, desc}) {
                 <p className='text-sm'>{desc}</p>
             </div>
             
-            <a className='absolute top-52 right-0 border-2 border-white px-2 py-1 flex items-center space-x-2 duration-200 ease-out' href={link} target="_blank"><button className='text-[10px] font-semibold'>
+            <a className='absolute top-52 right-0 border-2 border-white px-2 py-1 flex items-center space-x-2 hover:scale-105 duration-200 ease-out' href={link} target="_blank"><button className='text-[10px] font-semibold'>
                 <p>VIEW CASE STUDY</p></button><img className='h-2' src={arrowIcon} alt="" /></a>
         </div>
 
